@@ -3,9 +3,6 @@ from django.utils.safestring import mark_safe
 from trainingpoint.models import *
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
-
-
-
 class TaiKhoanAdmin(admin.ModelAdmin):
     readonly_fields = ['my_avatar']
 
@@ -21,12 +18,13 @@ admin.site.register(Khoa)
 admin.site.register(Lop)
 admin.site.register(TroLySinhVien_Khoa)
 admin.site.register(SinhVien)
-admin.site.register(HocKy_NamHoc)
 admin.site.register(Dieu)
-admin.site.register(HoatDongNgoaiKhoa)
-admin.site.register(ThamGia)
-admin.site.register(MinhChung)
 admin.site.register(BaiViet)
 admin.site.register(Comment)
 admin.site.register(Like)
+admin.site.register(HocKy_NamHoc)
+admin.site.register(ThamGia)
+admin.site.register(MinhChung)
+admin.site.register(HoatDongNgoaiKhoa)
 admin.site.register(DiemRenLuyen)
+
