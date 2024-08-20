@@ -45,8 +45,6 @@ class BaiVietViewSet(viewsets.ViewSet, generics.ListCreateAPIView):
 
         return [permissions.AllowAny()]
 
-
-
     def get_queryset(self):
         queries = self.queryset
         q = self.request.query_params.get("q")
@@ -91,13 +89,14 @@ class BaiVietViewSet(viewsets.ViewSet, generics.ListCreateAPIView):
         liked = Like.objects.filter(bai_viet=bai_viet, tai_khoan=user, active=1).exists()
         if not liked:
             return Response({'liked': False}, status=status.HTTP_200_OK)
-        return Response({'liked': True }, status=status.HTTP_200_OK)
 
+        return Response({'liked': True }, status=status.HTTP_200_OK)
 
     @action(methods=['get'], url_path='tac_gia', detail=True)
     def get_tacgia(self, request, pk):
         baiviet = self.get_object()
         tacgia = TaiKhoan.objects.get(id=baiviet.tro_ly.id)
+
         return Response(serializers.TaiKhoanSerializer(tacgia).data, status=status.HTTP_200_OK)
 
 
@@ -170,7 +169,6 @@ class DiemRenLuyenViewset(viewsets.ViewSet, generics.ListCreateAPIView):
                     raise exceptions.PermissionDenied()
 
         return [permissions.AllowAny()]
-
 
     def get_queryset(self):
         queryset = self.queryset
@@ -245,7 +243,6 @@ class DiemRenLuyenViewset(viewsets.ViewSet, generics.ListCreateAPIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
     @action(detail=False, methods=['get'], url_path=r'(?P<id_sinh_vien>\d+)/(?P<id_hoc_ky>\d+)')
     def get_diem_ren_luyen(self, request, id_sinh_vien=None, id_hoc_ky=None):
         try:
@@ -314,8 +311,6 @@ class HoatDongNgoaiKhoaViewSet(viewsets.ViewSet, generics.CreateAPIView, generic
         return Response(serializers.ThamGiaSerializer(thamgias, many=True).data,
                         status=status.HTTP_200_OK)
 
-
-
     @action(methods=['get'], url_path='diemdanh', detail=False)
     def get_hdnk_diemdanh(self, request):
         # Chỉ điểm danh các hoạt động được tổ chức bởi khoa mình, không được điểm danh các hoạt được tổ chức bởi khoa khác
@@ -352,8 +347,6 @@ class HoatDongNgoaiKhoaViewSet(viewsets.ViewSet, generics.CreateAPIView, generic
             khoa = TroLySinhVien_Khoa.objects.get(trolySV=troly).khoa;
             troly_list = TroLySinhVien_Khoa.objects.filter(khoa=khoa).values_list('trolySV', flat=True)
             hoatdong = HoatDongNgoaiKhoa.objects.filter(hk_nh__hoc_ky=hk, tro_ly__in=troly_list, active=True)
-
-
 
             if not hoatdong.exists():
                 return Response({"message": "No activities found for the specified assistant and semester"},
@@ -407,13 +400,11 @@ class HoatDongNgoaiKhoaViewSet(viewsets.ViewSet, generics.CreateAPIView, generic
 
         hoatdong.active = False
         hoatdong.save()
-
         baiviets = BaiViet.objects.filter(hd_ngoaikhoa=hoatdong.id)
         if baiviets.exists():
             baiviets.update(active=False)
 
         return Response(serializers.HoatDongNgoaiKhoaSerializer(hoatdong).data, status=status.HTTP_200_OK)
-
 
     def get_permissions(self):
             if self.action in ['get_thamgias']:
@@ -436,6 +427,7 @@ class HoatDongNgoaiKhoaViewSet(viewsets.ViewSet, generics.CreateAPIView, generic
         thamgias = ThamGia.objects.filter(hd_ngoaikhoa=hoatdong)
         return Response(serializers.ThamGiaSerializer(thamgias, many=True).data,
                         status=status.HTTP_200_OK)
+
 
 class KhoaViewSet(viewsets.ViewSet,generics.ListAPIView):
     queryset = Khoa.objects.filter(active=True)
@@ -478,6 +470,7 @@ class KhoaViewSet(viewsets.ViewSet,generics.ListAPIView):
 
         return Response(serializers.SinhVienSerializer(sinhviens, many=True).data,
                         status=status.HTTP_200_OK)
+
 
 class LopViewSet(viewsets.ViewSet,generics.ListAPIView):
     queryset = Lop.objects.filter(active=True)
@@ -539,6 +532,7 @@ class MinhChungViewSet(viewsets.ViewSet, generics.ListCreateAPIView,generics.Upd
         serializer = self.serializer_class(minhchung)
         return Response(serializer.data)
 
+
 class SinhVienViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.UpdateAPIView, generics.ListAPIView, generics.RetrieveAPIView):
     serializer_class = serializers.SinhVienSerializer
     # pagination_class = paginators.SinhVienPaginator
@@ -581,11 +575,11 @@ class SinhVienViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.UpdateA
             sv.save()
         return Response(serializers.SinhVienSerializer(sv).data)
 
+
 class TaiKhoanViewSet(viewsets.ViewSet, generics.CreateAPIView):
     queryset = TaiKhoan.objects.filter(is_active=True).all()
     serializer_class = serializers.TaiKhoanSerializer
     # parser_classes = [parsers.MultiPartParser]
-
 
     def get_permissions(self):
         if self.action in ['taikhoan_is_valid', 'login_firebase', 'khoa']:
@@ -609,18 +603,6 @@ class TaiKhoanViewSet(viewsets.ViewSet, generics.CreateAPIView):
                     return [permissions.IsAuthenticated()]
                 else:
                     raise exceptions.PermissionDenied()
-
-
-    # @action(methods=['get'], detail=True)
-    # def timkiemsinhvien(self, request, pk):
-    #     taikhoan = TaiKhoan.objects.get(id=pk)
-    #     sinhvien = SinhVien.objects.get(email=taikhoan.email)
-    #     if sinhvien:
-    #         return Response(serializers.SinhVienSerializer(sinhvien).data, status=status.HTTP_200_OK)
-    #     return Response({'error': 'Không tìm thấy sinh viên'}, status=status.HTTP_404_NOT_FOUND)
-
-
-
 
     @action(methods=['get', 'patch'], url_path='current-taikhoan', detail=False)
     def get_current_user(self, request):
@@ -649,7 +631,6 @@ class TaiKhoanViewSet(viewsets.ViewSet, generics.CreateAPIView):
                                 status=status.HTTP_200_OK)
 
         return Response(data={'is_valid': "False"}, status=status.HTTP_200_OK)
-
 
     @action(methods=['get'], url_path='firebase', detail=False)
     def login_firebase(self, request):
@@ -712,6 +693,7 @@ class TroLySinhVienKhoaViewset(viewsets.ViewSet, generics.ListAPIView, generics.
 
         return Response(serializers.SinhVienSerializer(troly, many=True).data,
                         status=status.HTTP_200_OK)
+
 
 class ThamGiaViewSet(viewsets.ViewSet, generics.ListAPIView, generics.UpdateAPIView, UpdateModelMixin):
     queryset = ThamGia.objects.all()
@@ -779,7 +761,6 @@ class ThamGiaViewSet(viewsets.ViewSet, generics.ListAPIView, generics.UpdateAPIV
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def retrieve(self, request, pk=None):
         try:
             thamgia = ThamGia.objects.get(pk=pk)
@@ -787,7 +768,6 @@ class ThamGiaViewSet(viewsets.ViewSet, generics.ListAPIView, generics.UpdateAPIV
             return Response(status=404)
         serializer = self.serializer_class(thamgia)
         return Response(serializer.data)
-
 
     @action(methods=['get'], detail=False, url_path=r'hoat-dong-diem-danh/(?P<id_sinh_vien>\d+)/(?P<id_hoc_ky>\d+)')
     def hoat_dong_diem_danh(self, request, id_sinh_vien=None, id_hoc_ky=None):
@@ -838,8 +818,6 @@ class ThamGiaViewSet(viewsets.ViewSet, generics.ListAPIView, generics.UpdateAPIV
 
         return Response(serializers.ThamGiaSerializer(thamgias, many=True).data)
 
-
-
     @action(methods=['post'], url_path='dang-ky-hoat-dong', detail=True)
     def dangkyhoatdong(self, request, pk=None):
         data = request.data.copy()
@@ -850,7 +828,6 @@ class ThamGiaViewSet(viewsets.ViewSet, generics.ListAPIView, generics.UpdateAPIV
             hd_ngoaikhoa=hd_ngoaikhoa,
             trang_thai=ThamGia.TrangThai.DangKy
         )
-
         serializer = self.serializer_class(tham_gia)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -871,9 +848,10 @@ class RolePermission(IsAuthenticated):
             TaiKhoan.Roles.TroLySinhVien.value
         ]
 
-class ExportBaoCaoViewLop(APIView):
 
+class ExportBaoCaoViewLop(APIView):
     permission_classes = [RolePermission]
+
     def get(self, request, id_lop, id_hoc_ky, id_format):
         try:
             lop = Lop.objects.get(pk=id_lop)
@@ -903,22 +881,17 @@ class ExportBaoCaoViewLop(APIView):
         response['Content-Disposition'] = f'attachment; filename="{file_name_ascii}"'
 
         writer = csv.writer(response)
-
         # Get current date and time
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
         # Write header
         writer.writerow(['', '', '', '', '', f"Ngày in: {now}"])
         writer.writerow(['', '', '', '', '', f"Mẫu: Báo cáo điểm rèn luyện"])
         writer.writerow([])
-
         # Write title
         writer.writerow([f"Báo cáo điểm rèn luyện lớp {lop} - Khoa {khoa} - Học kì {hk}", '', '', '', '', ''])
         writer.writerow([])
-
         # Write table headers
         writer.writerow(['Sinh Viên', 'Mã số sinh viên', 'Lớp', 'Khoa', 'Điểm Tổng', 'Xếp Loại'])
-
         # Write table data
         for item in data:
             writer.writerow(
@@ -929,12 +902,9 @@ class ExportBaoCaoViewLop(APIView):
     def export_pdf(self, data, lop, khoa,hk):
         pdfmetrics.registerFont(TTFont('TimesNewRoman', 'times.ttf'))
         pdfmetrics.registerFont(TTFont('TimesNewRoman-Bold', 'timesbd.ttf'))
-
-
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=letter)
         elements = []
-
         # Define styles
         styles = getSampleStyleSheet()
         title_style = ParagraphStyle(
@@ -969,12 +939,10 @@ class ExportBaoCaoViewLop(APIView):
         header = Paragraph(f"Ngày in: {now}<br/>Mẫu: Báo cáo điểm rèn luyện", header_style)
         elements.append(header)
         elements.append(Spacer(1, 12))
-
         # Add title
         title = Paragraph(f"Báo cáo điểm rèn luyện lớp {lop} - Khoa {khoa}<br/>Học kì {hk}", title_style)
         elements.append(title)
         elements.append(Spacer(1, 12))
-
         # Create table data
         data_table = [['Sinh Viên', 'Mã số sinh viên','Lớp', 'Khoa', 'Điểm Tổng', 'Xếp Loại']]
         for item in data:
@@ -986,24 +954,21 @@ class ExportBaoCaoViewLop(APIView):
                 str(item['diem_tong']),
                 item['xep_loai']
             ])
-
         col_widths = [120, 100, 100, 80, 80]
         # Create table
         table = Table(data_table, colWidths=col_widths)
         table.setStyle(table_style)
         elements.append(table)
-
-
         # Create a frame to hold the elements
         doc.build(elements)
         file_name = f"bao_cao_diem_ren_luyen_lop_{lop}_khoa_{khoa}.pdf"
         file_name_ascii = unidecode(file_name).lower()
-
         response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{file_name_ascii}"'
-
         buffer.close()
+
         return response
+
 
 class ExportBaoCaoViewKhoa(APIView):
     permission_classes = [RolePermission]
@@ -1035,24 +1000,18 @@ class ExportBaoCaoViewKhoa(APIView):
         file_name = f"bao_cao_diem_ren_luyen_khoa_{khoa}.csv"
         file_name_ascii = unidecode(file_name).lower()
         response['Content-Disposition'] = f'attachment; filename="{file_name_ascii}"'
-
         writer = csv.writer(response)
-
         # Get current date and time
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
         # Write header
         writer.writerow(['', '', '', '', '', f"Ngày in: {now}"])
         writer.writerow(['', '', '', '', '', f"Mẫu: Báo cáo điểm rèn luyện"])
         writer.writerow([])
-
         # Write title
         writer.writerow([f"Báo cáo điểm rèn luyện khoa {khoa} - Học kì {hk}", '', '', '', '', ''])
         writer.writerow([])
-
         # Write table headers
         writer.writerow(['Sinh Viên', 'Mã số sinh viên', 'Lớp', 'Khoa', 'Điểm Tổng', 'Xếp Loại'])
-
         # Write table data
         for item in data:
             writer.writerow(
@@ -1063,11 +1022,9 @@ class ExportBaoCaoViewKhoa(APIView):
     def export_pdf(self, data, khoa, hk):
         pdfmetrics.registerFont(TTFont('TimesNewRoman', 'times.ttf'))
         pdfmetrics.registerFont(TTFont('TimesNewRoman-Bold', 'timesbd.ttf'))
-
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=letter)
         elements = []
-
         # Define styles
         styles = getSampleStyleSheet()
         title_style = ParagraphStyle(
@@ -1096,19 +1053,15 @@ class ExportBaoCaoViewKhoa(APIView):
             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
             ('GRID', (0, 0), (-1, -1), 1, colors.black)
         ])
-
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
         # Add header
         header = Paragraph(f"Ngày in: {now}<br/>Mẫu: Báo cáo điểm rèn luyện", header_style)
         elements.append(header)
         elements.append(Spacer(1, 12))
-
         # Add title
         title = Paragraph(f"Báo cáo điểm rèn luyện khoa {khoa}<br/>Học kì {hk}", title_style)
         elements.append(title)
         elements.append(Spacer(1, 12))
-
         # Create table data
         data_table = [['Sinh Viên', 'Mã số sinh viên', 'Lớp', 'Khoa', 'Điểm Tổng', 'Xếp Loại']]
         for item in data:
@@ -1120,23 +1073,19 @@ class ExportBaoCaoViewKhoa(APIView):
                 str(item['diem_tong']),
                 item['xep_loai']
             ])
-
         col_widths = [120, 100, 100, 80, 80]
         # Create table
         table = Table(data_table, colWidths=col_widths)
         table.setStyle(table_style)
         elements.append(table)
-
         # Build PDF
         doc.build(elements)
-
         file_name = f"bao_cao_diem_ren_luyen_khoa_{khoa}.pdf"
         file_name_ascii = unidecode(file_name).lower()
-
         response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{file_name_ascii}"'
-
         buffer.close()
+
         return response
 
 class BaoCaoChiTietSinhVien(APIView):
@@ -1162,7 +1111,6 @@ class BaoCaoChiTietSinhVien(APIView):
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=letter)
         elements = []
-
         styles = getSampleStyleSheet()
         title_style = ParagraphStyle(
             'title',
@@ -1193,23 +1141,14 @@ class BaoCaoChiTietSinhVien(APIView):
             ('SPAN', (0, -2), (1, -2)),  # Gộp 2 cột đầu của hàng tổng điểm cuối
             ('SPAN', (0, -1), (1, -1)),  # Gộp 2 cột đầu của hàng xếp loại cuối
         ])
-
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
         header = Paragraph(f"Ngày in: {now}<br/>Mẫu: Báo cáo chi tiết điểm rèn luyện", header_style)
         elements.append(header)
         elements.append(Spacer(1, 12))
-
-
         title = Paragraph(f"Chi tiết điểm rèn luyện sinh viên {sinh_vien.ho_ten}<br/>Học kì {hoc_ky}", title_style)
         elements.append(title)
         elements.append(Spacer(1, 12))
-
-
         data_table = [['STT', 'Minh chứng', 'Điểm SV', 'Điểm tối đa']]
-
-
         dieu_dict = {}
         for tg in tham_gia:
             dieu = tg.hd_ngoaikhoa.dieu
@@ -1233,27 +1172,20 @@ class BaoCaoChiTietSinhVien(APIView):
 
         data_table.append(['Điểm tổng:', '', diem_ren_luyen.diem_tong, ''])
         data_table.append(['Xếp loại:', '', diem_ren_luyen.get_xep_loai_display(), ''])
-
         col_widths = [40, 320, 80, 80]
-
         table = Table(data_table, colWidths=col_widths)
         table.setStyle(table_style)
         elements.append(table)
-
-
         doc.build(elements)
-
         buffer.seek(0)
+
         return buffer
 
     def generate_csv(self, sinh_vien, hoc_ky, diem_ren_luyen, tham_gia):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = f'attachment; filename="bao_cao_chi_tiet_diem_ren_luyen_{sinh_vien.mssv}_hk_{hoc_ky.id}.csv"'
-
         writer = csv.writer(response)
-
         writer.writerow(['STT', 'Điều', 'Tên hoạt động', 'Điểm SV', 'Điểm tối đa'])
-
         stt = 1
         for tg in tham_gia:
             dieu = tg.hd_ngoaikhoa.dieu
@@ -1271,14 +1203,10 @@ class BaoCaoChiTietSinhVien(APIView):
                 '',
             ])
             stt += 1
-
         writer.writerow(['', 'Điểm tổng:', diem_ren_luyen.diem_tong, ''])
         writer.writerow(['', 'Xếp loại:', diem_ren_luyen.get_xep_loai_display(), ''])
 
         return response
-
-
-
 
 
 class BaoCaoViewLop(APIView):
@@ -1299,6 +1227,7 @@ class BaoCaoViewLop(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
 class BaoCaoViewKhoa(APIView):
     permission_classes = [RolePermission]
 
@@ -1317,52 +1246,6 @@ class BaoCaoViewKhoa(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# class CalculateDiemRenLuyen(APIView):
-#
-#     permission_classes = [RolePermission]
-#
-#     def post(self, request, sinhvien_id, hk_id):
-#         try:
-#             sinh_vien = SinhVien.objects.get(id=sinhvien_id)
-#             # Lấy tất cả các hoạt động mà sinh viên đã tham gia trong học kỳ đó
-#             hoat_dong_tham_gia = ThamGia.objects.filter(sinh_vien=sinh_vien, hd_ngoaikhoa__hk_nh_id=hk_id, trang_thai=ThamGia.TrangThai.DiemDanh)
-#             # Tính điểm rèn luyện
-#             diem_ren_luyen = 0
-#             dieu_points = {}
-#
-#             for tham_gia in hoat_dong_tham_gia:
-#                 hd_ngoaikhoa = tham_gia.hd_ngoaikhoa
-#                 dieu_id = hd_ngoaikhoa.dieu.id
-#
-#                 if dieu_id not in dieu_points:
-#                     dieu_points[dieu_id] = 0
-#
-#                 dieu_points[dieu_id] += hd_ngoaikhoa.diem_ren_luyen
-#
-#             for dieu_id, points in dieu_points.items():
-#                 try:
-#                     dieu = Dieu.objects.get(id=dieu_id)
-#                     diem_ren_luyen += min(points, dieu.diem_toi_da)
-#                 except ObjectDoesNotExist:
-#                     return Response({'error': f'Dieu với ID {dieu_id} không tồn tại'},
-#                                     status=status.HTTP_400_BAD_REQUEST)
-#
-#             # Lưu điểm rèn luyện vào bảng DiemRenLuyen
-#             diem_ren_luyen_entry, created = DiemRenLuyen.objects.update_or_create(
-#                 sinh_vien=sinh_vien,
-#                 hk_nh_id=hk_id,
-#                 defaults={'diem_tong': diem_ren_luyen}
-#             )
-#
-#             serializer = serializers.DiemRenLuyenSerializer(diem_ren_luyen_entry)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#
-#         except SinhVien.DoesNotExist:
-#             return Response({'error': 'Sinh viên không tồn tại'}, status=status.HTTP_404_NOT_FOUND)
-#
-#         except Exception as e:
-#             print(e)
-#             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class UploadFileDiemDanh(APIView):
     permission_classes = [RolePermission]
