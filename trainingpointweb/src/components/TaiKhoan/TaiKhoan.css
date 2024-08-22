@@ -1,0 +1,12 @@
+/* TaiKhoan.css */
+.container1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+}
+
+.card-custom {
+    width: 100%;
+    max-width: 500px; /* Adjust the max-width as needed */
+}

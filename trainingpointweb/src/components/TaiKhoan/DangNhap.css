@@ -1,0 +1,116 @@
+/* DangNhap.css */
+
+/* Căn chỉnh toàn bộ phần thân */
+.vh-100 {
+    height: 100vh;
+}
+
+/* Container tùy chỉnh cho độ cao */
+.h-custom {
+    height: calc(100% - 73px);
+}
+
+/* Định dạng ảnh mẫu */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Phần tử form outline */
+.form-outline {
+    margin-bottom: 1.5rem;
+}
+
+/* Điều chỉnh form-control */
+.form-control.form-control-lg {
+    height: calc(1.5em + 1rem + 2px);
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+}
+
+/* Hiển thị thông báo lỗi */
+.alert-danger {
+    margin-top: 1rem;
+}
+
+/* Checkbox hiển thị mật khẩu */
+.form-check-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+}
+
+/* Điều chỉnh checkbox nhãn */
+.form-check-label {
+    margin-bottom: 0;
+}
+
+/* Nút đăng nhập */
+.btn.btn-primary.btn-lg {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    margin-top: 1rem;
+}
+
+/* Văn bản tùy chỉnh */
+.small.fw-bold.mt-2.pt-1.mb-0 {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    margin-bottom: 0;
+}
+
+/* Link đăng ký */
+.link-danger {
+    color: #dc3545;
+    text-decoration: none;
+}
+
+.link-danger:hover {
+    color: #bd2130;
+    text-decoration: underline;
+}
+
+/* Spinner trung tâm */
+.d-flex.justify-content-center.mb-3 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.registration-background1 {
+    background-image: url('https://images.pexels.com/photos/1029618/pexels-photo-1029618.jpeg');
+    background-size: cover; 
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding: 20px; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.registration-background1::before {
+    content: ''; 
+    position: absolute; 
+    top: 0;
+    left: 0; 
+    width: 100%;
+    height: 100%; 
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: -1; 
+}
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 26px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1180px;
+    margin: auto;
+    position: relative;
+    z-index: 1;
+}
