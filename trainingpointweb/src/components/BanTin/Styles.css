@@ -1,0 +1,200 @@
+ /* body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 20px 0;
+    margin-top: auto;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.background-image {
+    background-image: url('https://images.pexels.com/photos/1029618/pexels-photo-1029618.jpeg');
+    background-size: cover; 
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh; 
+   
+    justify-content: center; 
+    align-items: center; 
+    padding: 20px; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: -2;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    margin-right: 10px; 
+}
+
+.search-button {
+    white-space: nowrap; 
+}
+
+
+.bai-viet {
+    width: 736px;
+    height: 537px;
+    padding: 30px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    background-color: #f8f9fa;
+}
+
+
+.bai-viet-content {
+    font-size: 20px;
+    line-height: 1.8;
+} 
+
+@media (min-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 auto;
+        width: 32.333333%;
+        padding-top: 24px;
+    }
+} */
+
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 20px 0;
+    margin-top: auto;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.background-image {
+    background-image: url('https://images.pexels.com/photos/1029618/pexels-photo-1029618.jpeg');
+    background-size: cover; 
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 20px; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: -2;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    margin-right: 10px; 
+}
+
+.search-button {
+    white-space: nowrap; 
+}
+
+.bai-viet {
+    width: 99%;
+    height: 105%;
+    padding-left: 13%;
+    padding-right: 13%;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    background-color: #f8f9fa;
+}
+
+.bai-viet-content {
+    font-size: 20px;
+    line-height: 1.8;
+}
+
+
+@media (min-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 auto;
+        width: 32.333333%;
+        padding-top: 24px;
+    }
+}
+.card-body1 {
+    flex: 1 1 auto;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+    color: var(--bs-card-color);
+    width: 120%;
+    padding-top: 0%;
+}

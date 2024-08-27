@@ -1,0 +1,22 @@
+.notification {
+    margin-bottom: 20px;
+}
+
+.notification h6 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.notification p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.notification a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.notification a:hover {
+    text-decoration: underline;
+}

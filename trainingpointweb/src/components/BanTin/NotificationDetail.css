@@ -1,0 +1,33 @@
+.notification-detail {
+    padding: 20px;
+}
+
+.view-more-button {
+    margin-top: 10px;
+}
+
+.notification-author {
+    margin-top: 20px;
+}
+
+.related-notifications {
+    margin-top: 20px;
+}
+
+.related-notifications ul {
+    list-style: none;
+    padding: 0;
+}
+
+.related-notifications li {
+    margin-bottom: 10px;
+}
+
+.related-notifications a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.related-notifications a:hover {
+    text-decoration: underline;
+}
